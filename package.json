@@ -6,7 +6,10 @@
   "scripts": {
     "dev": "nodemon --watch server --exec \"node server/index.js\"",
     "start": "node server/index.js",
-    "build": "echo 'No build step'"
+    "build": "cp -r public/* ."
+  },
+  "engines": {
+    "node": ">=18.0.0"
   },
   "dependencies": {
     "cors": "^2.8.5",

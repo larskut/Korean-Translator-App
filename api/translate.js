@@ -3,7 +3,22 @@ import OpenAI from 'openai';
 // OpenAI client
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
+export const config = {
+  runtime: 'nodejs18.x',
+};
+
 export default async function handler(req, res) {
+  // Enable CORS
+  res.setHeader('Access-Control-Allow-Credentials', true);
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST,OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+  // Handle OPTIONS request
+  if (req.method === 'OPTIONS') {
+    res.status(200).end();
+    return;
+  }
   // Only allow POST method
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -92,7 +107,32 @@ export default async function handler(req, res) {
 
     res.json(normalized);
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Internal server error' });
+    console.error('Translation error:', {
+      message: err.message,
+      name: err.name,
+      stack: err.stack,
+      apiKey: process.env.OPENAI_API_KEY ? 'Present' : 'Missing'
+    });
+    
+    // Check for specific error types
+    if (err.name === 'ConfigError' || !process.env.OPENAI_API_KEY) {
+      return res.status(500).json({ 
+        error: 'API configuration error',
+        message: 'OpenAI API key is not configured'
+      });
+    }
+    
+    if (err.response) {
+      // OpenAI API error
+      return res.status(err.response.status || 500).json({
+        error: 'OpenAI API error',
+        message: err.response.data?.error?.message || err.message
+      });
+    }
+
+    res.status(500).json({ 
+      error: 'Internal server error',
+      message: err.message
+    });
   }
 }
