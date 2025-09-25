@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Korean Translator</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="container">
+      <h1>Korean Translator</h1>
+      <div class="theme-toggle">
+        <label class="switch">
+          <input id="themeToggle" type="checkbox" />
+          <span class="slider"></span>
+        </label>
+        <span id="themeLabel">Light</span>
+      </div>
+    </header>
+
+    <main class="container">
+      <form id="translateForm" class="card">
+        <label for="sentence">Korean sentence</label>
+        <textarea id="sentence" placeholder="예: 저는 한국어를 공부하고 있어요." rows="3" required></textarea>
+
+        <label for="targetLang">Translate to</label>
+        <select id="targetLang">
+          <option>English</option>
+          <option>German</option>
+          <option>Spanish</option>
+          <option>French</option>
+          <option>Japanese</option>
+        </select>
+
+        <button id="submitBtn" type="submit">Translate</button>
+        <div id="status" class="status" aria-live="polite"></div>
+      </form>
+
+      <section id="results" class="results hidden">
+        <h2>Full translation</h2>
+        <p id="fullTranslation" class="full"></p>
+        <h3>Word-by-word</h3>
+        <div id="words" class="words"></div>
+      </section>
+    </main>
+
+    <footer class="container footer">
+      <span>Powered by GPT‑4o</span>
+    </footer>
+
+    <script src="/main.js" type="module"></script>
+  </body>
+  </html>
+
+
