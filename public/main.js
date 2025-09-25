@@ -36,7 +36,7 @@ form.addEventListener('submit', async (e) => {
   submitBtn.disabled = true;
 
   try {
-    const res = await fetch('/api/translate', {
+    const res = await fetch(window.location.origin + '/api/translate', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ sentence, targetLang })
